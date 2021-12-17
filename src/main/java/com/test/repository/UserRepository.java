@@ -20,4 +20,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "select u from User u where u.ResetPasswordToken = :token")
     User getByResetPasswordToken (String token);
+
+    @Query(nativeQuery = true ,value = "SELECT * FROM user_library WHERE penalty_days > 0")
+    User getPenaltyDays ();
+
 }

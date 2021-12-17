@@ -3,6 +3,7 @@ package com.test.service;
 
 import com.test.exception.NotFoundException;
 import com.test.model.User;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,5 +29,11 @@ public interface UserService {
     void ResetPasswordToken(String email) throws NotFoundException;
 
     User ResetPassword(String token, String password) throws NotFoundException;
+
+    User getPenaltyDays();
+
+    public void getPenaltyDaysDelete(int id) throws NotFoundException;
+
+    void getPenaltyDaysmail(int id) throws NotFoundException;
 
     }

@@ -146,4 +146,22 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public User getPenaltyDays() {
+        return userRepository.getPenaltyDays();
+    }
+
+    @Override
+    public void getPenaltyDaysDelete(int id) throws NotFoundException {
+        User user = getById(id);
+        user.setPenaltyDays(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void getPenaltyDaysmail(int id) throws NotFoundException {
+        User user = getById(id);
+        mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "please return the book");
+    }
 }

@@ -73,6 +73,20 @@ public class UserController {
     @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
     @GetMapping("/get-penalty-Days")
     public User getPenaltyDays(){
-        return null;
+        return userService.getPenaltyDays();
     }
+
+    @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
+    @PutMapping("/get-penalty-Days-delete")
+    public void getPenaltyDaysDelete(@RequestParam("id")int id) throws NotFoundException{
+        userService.getPenaltyDaysDelete(id);
+    }
+
+    @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
+    @PutMapping("/get-penalty-Days-mail")
+    public void getPenaltyDaysmail(@RequestParam("id")int id) throws NotFoundException {
+
+    }
+
+
 }
