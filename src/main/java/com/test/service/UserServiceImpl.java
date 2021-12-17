@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void save(User user) throws NotFoundException {
         Address address = addresService.getAllByNumberAndCityAndStreet(user.getAddress());

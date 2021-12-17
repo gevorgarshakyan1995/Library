@@ -69,4 +69,10 @@ public class UserController {
     public User ResetPassword(@RequestParam("token") String token, @RequestParam("password") String password) throws NotFoundException {
         return userService.ResetPassword(token, password);
     }
+
+    @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
+    @GetMapping("/get-penalty-Days")
+    public User getPenaltyDays(){
+        return null;
+    }
 }
