@@ -50,18 +50,22 @@ public class User {
     private String number;
 
     @Column(name = "amount")
-    private Integer amount;
+    private Integer Wallet;
 
+
+    @Column(name = "penalty_days")
+    private Integer penaltyDays;
 
 
     @ManyToMany
-    @JoinTable(name = "user_authoriti",
+    @JoinTable(name = "user_authoriti_library",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authoriti_id"))
     private List<Authority> authoriti;
 
     public User() {
     }
+
     @Override
     public String toString() {
         return "User{" +
@@ -71,8 +75,24 @@ public class User {
                 '}';
     }
 
+    public Integer getPenaltyDays() {
+        return penaltyDays;
+    }
+
+    public void setPenaltyDays(Integer penaltyDays) {
+        this.penaltyDays = penaltyDays;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public Integer getWallet() {
+        return Wallet;
+    }
+
+    public void setWallet(Integer wallet) {
+        Wallet = wallet;
     }
 
     public void setId(int id) {
@@ -157,14 +177,6 @@ public class User {
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
     }
 
     public List<Authority> getAuthoriti() {

@@ -26,6 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.POST, "/user");
+        web.ignoring().antMatchers(HttpMethod.POST, "/user/verify");
+        web.ignoring().antMatchers("/user/reset-password");
     }
 
     @Override
