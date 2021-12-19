@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class UserController {
 
     @RolesAllowed(value = "ROLE_ADMIN")
     @GetMapping
-    List<User> getAll()  throws NotFoundException {
+    List<User> getAll() throws NotFoundException {
         return userService.getall();
     }
 
@@ -72,19 +73,25 @@ public class UserController {
 
     @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
     @GetMapping("/get-penalty-Days")
-    public List<User> getPenaltyDays(){
+    public List<User> getPenaltyDays() {
         return userService.getPenaltyDays();
     }
 
     @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
     @PutMapping("/get-penalty-Days-delete")
-    public void getPenaltyDaysDelete(@RequestParam("id")int id) throws NotFoundException{
+    public void getPenaltyDaysDelete(@RequestParam("id") int id) throws NotFoundException {
         userService.getPenaltyDaysDelete(id);
     }
 
     @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
     @PutMapping("/get-penalty-Days-mail")
-    public void getPenaltyDaysmail(@RequestParam("id")int id) throws NotFoundException {
+    public void getPenaltyDaysmail(@RequestParam("id") int id) throws NotFoundException {
+        userService.getPenaltyDaysmail(id);
+    }
+
+    @PostMapping("/buy")
+    public void Buy(Principal principal, @RequestParam("id") int id) { //id Book
+
 
     }
 

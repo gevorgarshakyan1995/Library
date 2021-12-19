@@ -2,6 +2,7 @@ package com.test.service;
 
 import com.test.exception.NotFoundException;
 import com.test.model.Address;
+import com.test.model.Book;
 import com.test.model.Status;
 import com.test.model.User;
 import com.test.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import sun.security.util.Password;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MailSender mailSender;
+
+    @Autowired
+    private BookService bookService;
 
     @Override
     public User getBYEmail(String email) throws NotFoundException {
@@ -165,4 +170,25 @@ public class UserServiceImpl implements UserService {
         mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "please return the book");
     }
 
-}
+    @Override
+    public void Buy(Principal principal, int id) { //id Book
+        User user =userRepository.getByEmail(principal.getName());
+        try{
+          Book book =  bookService.getById(id);
+            if (user.getWallet() > book.getValue()){
+                int wallet = user.getWallet()-book.getValue();
+               user.setWallet(wallet);
+                userRepository.save(user);
+                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library",book.getName()+"buy book");
+                String text = "buy book" + user.getId() + book.getId();
+                mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library",text);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        }
+    }
+
+
+

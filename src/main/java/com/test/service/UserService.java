@@ -5,26 +5,27 @@ import com.test.exception.NotFoundException;
 import com.test.model.User;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
 
 
-    public List<User> getall() throws NotFoundException;
+    List<User> getall() throws NotFoundException;
 
     void save(User users) throws NotFoundException;
 
-    public void DeleteById(int id);
+    void DeleteById(int id);
 
-    public User getById(int id) throws NotFoundException;
+    User getById(int id) throws NotFoundException;
 
-    public User getBYEmail(String email) throws NotFoundException;
+    User getBYEmail(String email) throws NotFoundException;
 
-    public List<User> getAllByName(String name);
+    List<User> getAllByName(String name);
 
     void verified(String Email) throws NotFoundException;
 
-    public void sendemail(String email, String subject, String text);
+    void sendemail(String email, String subject, String text);
 
     void ResetPasswordToken(String email) throws NotFoundException;
 
@@ -32,9 +33,10 @@ public interface UserService {
 
     List<User> getPenaltyDays();
 
-    public void getPenaltyDaysDelete(int id) throws NotFoundException;
+    void getPenaltyDaysDelete(int id) throws NotFoundException;
 
     void getPenaltyDaysmail(int id) throws NotFoundException;
 
+    void Buy(Principal principal, int id);
 
     }

@@ -1,6 +1,7 @@
 package com.test.service;
 
 import com.test.model.User;
+import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,6 +15,9 @@ import java.util.List;
 public class PenaltyDays {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private BookService bookService;
@@ -31,7 +35,7 @@ public class PenaltyDays {
                 user1.setPenaltyDays(user1.getPenaltyDays()+1);
                 user1.setPenaltyDaystaem(System.currentTimeMillis());
                 try{
-                    userService.save(user1);
+                    userRepository.save(user1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
