@@ -30,10 +30,11 @@ public interface UserService {
 
     User ResetPassword(String token, String password) throws NotFoundException;
 
-    User getPenaltyDays();
+    List<User> getPenaltyDays();
 
     public void getPenaltyDaysDelete(int id) throws NotFoundException;
 
     void getPenaltyDaysmail(int id) throws NotFoundException;
+
 
     }

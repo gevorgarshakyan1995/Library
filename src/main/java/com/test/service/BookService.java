@@ -1,4 +1,21 @@
 package com.test.service;
 
+import com.test.exception.NotFoundException;
+import com.test.model.Book;
+
+import java.util.List;
+
 public interface BookService {
+    public List<Book> getall() throws NotFoundException;
+
+    void save(Book book) throws NotFoundException;
+
+    void DeleteById(int id);
+
+    Book getById(int id) throws NotFoundException;
+
+    List<Book> getAllByName(String name);
+
+    List<Book> getAllByAuthot (String Authot);
+
 }

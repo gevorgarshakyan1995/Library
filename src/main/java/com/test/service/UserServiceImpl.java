@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getPenaltyDays() {
+    public  List<User> getPenaltyDays() {
         return userRepository.getPenaltyDays();
     }
 
@@ -164,4 +164,5 @@ public class UserServiceImpl implements UserService {
         User user = getById(id);
         mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "please return the book");
     }
+
 }

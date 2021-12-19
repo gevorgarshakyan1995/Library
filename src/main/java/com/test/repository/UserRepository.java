@@ -16,12 +16,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(nativeQuery = true, value = "Select * from user where soundex(name)=soundex(?)") //JDBC motavor voronum maqur sql
     List<User> getAllByName (String name);
 
-    User getByEmailAndPassword (String email,String password);
 
     @Query(value = "select u from User u where u.ResetPasswordToken = :token")
     User getByResetPasswordToken (String token);
 
     @Query(nativeQuery = true ,value = "SELECT * FROM user_library WHERE penalty_days > 0")
-    User getPenaltyDays ();
+    List<User> getPenaltyDays ();
+
 
 }

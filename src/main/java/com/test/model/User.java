@@ -45,9 +45,14 @@ public class User {
     @JoinColumn
     private Address address;
 
+    @OneToOne
+    @JoinColumn
+    private Book book;
+
 
     @Column(name = "Number")
     private String number;
+
 
     @Column(name = "amount")
     private Integer Wallet;
@@ -56,6 +61,8 @@ public class User {
     @Column(name = "penalty_days")
     private Integer penaltyDays;
 
+    @Column(name = "penalty_days_team")
+    private Long penaltyDaystaem;
 
     @ManyToMany
     @JoinTable(name = "user_authoriti_library",
@@ -73,6 +80,14 @@ public class User {
                 ", email='" + email + '\'' +
                 ", address=" + address +
                 '}';
+    }
+
+    public Long getPenaltyDaystaem() {
+        return penaltyDaystaem;
+    }
+
+    public void setPenaltyDaystaem(Long penaltyDaystaem) {
+        this.penaltyDaystaem = penaltyDaystaem;
     }
 
     public Integer getPenaltyDays() {
@@ -185,5 +200,13 @@ public class User {
 
     public void setAuthoriti(List<Authority> authoriti) {
         this.authoriti = authoriti;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

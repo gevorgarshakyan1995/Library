@@ -1,6 +1,9 @@
 package com.test.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Book {
@@ -12,7 +15,7 @@ public class Book {
     private String name;
 
     @Column
-    private String authot;
+    private String authot;//author
 
     @Column
     private int haort;
@@ -23,14 +26,16 @@ public class Book {
     @Column(name = "value_rent")
     private  int valueRent;
 
-    @Column(name="who_is")  //Who is it with
-    private String whoIs;
-
     @Column(name = "tream_rent")
     private String tremRent;
 
     @Column
-    private String waiting;
+    private String waiting; //spasum
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "address")
+    // Who is it with
+    private User user;
 
     public String getWaiting() {
         return waiting;
@@ -76,6 +81,14 @@ public class Book {
         return value;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void setValue(int value) {
         this.value = value;
     }
@@ -86,14 +99,6 @@ public class Book {
 
     public void setValueRent(int valueRent) {
         this.valueRent = valueRent;
-    }
-
-    public String getWhoIs() {
-        return whoIs;
-    }
-
-    public void setWhoIs(String whoIs) {
-        this.whoIs = whoIs;
     }
 
     public String getTremRent() {
@@ -113,7 +118,6 @@ public class Book {
                 ", haort=" + haort +
                 ", value=" + value +
                 ", valueRent=" + valueRent +
-                ", whoIs='" + whoIs + '\'' +
                 ", tremRent='" + tremRent + '\'' +
                 '}';
     }

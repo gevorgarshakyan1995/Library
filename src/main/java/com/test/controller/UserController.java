@@ -72,7 +72,7 @@ public class UserController {
 
     @RolesAllowed(value = "ROLE_ADMIN") //penaltyDays
     @GetMapping("/get-penalty-Days")
-    public User getPenaltyDays(){
+    public List<User> getPenaltyDays(){
         return userService.getPenaltyDays();
     }
 
