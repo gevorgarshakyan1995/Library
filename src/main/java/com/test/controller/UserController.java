@@ -96,8 +96,8 @@ public class UserController {
     }
 
     @PostMapping("/rent")
-    public void rent(Principal principal, @RequestParam("id") int id){ //id Book
-
+    public void rent(Principal principal, @RequestParam("id") int id) { //id Book
+        userService.rent(principal, id);
     }
 
 
