@@ -39,4 +39,6 @@ public interface UserService {
 
     void Buy(Principal principal, int id);
 
+    void rent(Principal principal,int id);
+
     }

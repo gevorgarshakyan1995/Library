@@ -91,7 +91,12 @@ public class UserController {
 
     @PostMapping("/buy")
     public void Buy(Principal principal, @RequestParam("id") int id) { //id Book
+        userService.Buy(principal, id);
 
+    }
+
+    @PostMapping("/rent")
+    public void rent(Principal principal, @RequestParam("id") int id){ //id Book
 
     }
 
