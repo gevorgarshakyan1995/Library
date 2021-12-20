@@ -100,5 +100,15 @@ public class UserController {
         userService.rent(principal, id);
     }
 
+    @PostMapping("/Reseved")
+    public void ResevedBook(Principal principal, @RequestParam("id") int id) { //id Book
+        userService.ResevedBook(principal, id);
+    }
+
+    @PostMapping("/Reseved-rent")
+    public void ResevedBookRent(Principal principal, @RequestParam("id") int id, @RequestParam("token") String token) {
+        userService.ResevedBookRent(principal, id, token);
+    }
+
 
 }

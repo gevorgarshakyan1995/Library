@@ -2,8 +2,11 @@ package com.test.service;
 
 import com.test.exception.NotFoundException;
 import com.test.model.Book;
+import com.test.model.Status;
+import com.test.model.StatusBook;
 import com.test.model.User;
 import com.test.repository.BookRepository;
+import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Book> getall() throws NotFoundException {
@@ -49,4 +55,29 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAllByAuthot(String Authot) {
         return bookRepository.getAllByAuthot(Authot);
     }
+
+    @Override
+    public List<Book> getAllByStatus(StatusBook Status) {
+        return bookRepository.getAllByStatus(Status);
+    }
+
+    @Override
+    public Book getAllByResevedBook(String ResevedBook) {
+        return bookRepository.getAllByResevedBook(ResevedBook);
+    }
+
+    @Override
+    public void ReturBook(int id) throws NotFoundException {
+        Book book = getById(id);
+        User user =book.getUser();
+        book.setStatusTime(null);
+        book.setStatus(Status.valueOf("LOOSE"));
+        book.setResevedBook(null);
+        book.setUser(null);
+        user.setPenaltyDaystaem(null);
+        userRepository.save(user);
+        bookRepository.save(book);
+
+    }
+
 }

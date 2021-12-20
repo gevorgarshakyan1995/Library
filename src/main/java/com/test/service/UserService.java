@@ -2,6 +2,7 @@ package com.test.service;
 
 
 import com.test.exception.NotFoundException;
+import com.test.model.Book;
 import com.test.model.User;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,5 +41,11 @@ public interface UserService {
     void Buy(Principal principal, int id);
 
     void rent(Principal principal,int id);
+
+    void ResevedBook (Principal principal,int id);
+
+    void ResevedBookRent (Principal principal,int id,String token);
+
+
 
     }

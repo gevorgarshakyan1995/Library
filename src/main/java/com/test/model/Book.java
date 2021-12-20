@@ -29,20 +29,27 @@ public class Book {
     @Column(name = "tream_rent")
     private String tremRent;
 
-    @Column
-    private String waiting; //spasum
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Book_status")
+    private Status status;
+
+    @Column(name = "reseved_Book_token", unique = true)
+    private String ResevedBook ;
+
+    @Column(name = "status_timeMillis")
+    private Long StatusTime;
 
     @JsonIgnore
     @OneToOne(mappedBy = "address")
     // Who is it with
     private User user;
 
-    public String getWaiting() {
-        return waiting;
+    public Long getStatusTime() {
+        return StatusTime;
     }
 
-    public void setWaiting(String waiting) {
-        this.waiting = waiting;
+    public void setStatusTime(Long statusTime) {
+        StatusTime = statusTime;
     }
 
     public int getId() {
@@ -81,6 +88,14 @@ public class Book {
         return value;
     }
 
+    public String getResevedBook() {
+        return ResevedBook;
+    }
+
+    public void setResevedBook(String resevedBook) {
+        ResevedBook = resevedBook;
+    }
+
     public User getUser() {
         return user;
     }
@@ -107,6 +122,14 @@ public class Book {
 
     public void setTremRent(String tremRent) {
         this.tremRent = tremRent;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override

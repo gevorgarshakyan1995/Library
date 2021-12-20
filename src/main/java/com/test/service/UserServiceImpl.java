@@ -1,10 +1,7 @@
 package com.test.service;
 
 import com.test.exception.NotFoundException;
-import com.test.model.Address;
-import com.test.model.Book;
-import com.test.model.Status;
-import com.test.model.User;
+import com.test.model.*;
 import com.test.repository.BookRepository;
 import com.test.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
@@ -181,18 +178,24 @@ public class UserServiceImpl implements UserService {
         try {
             Book book = bookService.getById(id);
             if (user.getWallet() >= book.getValue()) {
-                int wallet = user.getWallet() - book.getValue();
-                user.setWallet(wallet);
-                userRepository.save(user);
-                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "buy book");
-                String text = "buy book" + user.getId() + book.getId();
-                mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
+                if (book.getUser() == null && book.getStatus().equals(StatusBook.LOOSE)) {
+                    int wallet = user.getWallet() - book.getValue();
+                    user.setWallet(wallet);
+                    userRepository.save(user);
+                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "buy book");
+                    String text = "buy book" + user.getId() + book.getId();
+                    mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
+                    bookService.DeleteById(id);
+                } else {
+                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "Book  RESEVED onli 10dasy");
+                }
             }
+            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
         } catch (Exception e) {
             e.printStackTrace();
             mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
         }
-        bookService.DeleteById(id);
+
 
     }
 
@@ -203,7 +206,7 @@ public class UserServiceImpl implements UserService {
         try {
             Book book = bookService.getById(id);
             if (user.getWallet() >= book.getValueRent()) {
-                if (book.getWaiting() == null) {
+                if (book.getUser() == null && book.getStatus().equals(StatusBook.LOOSE)) {
                     int wallet = user.getWallet() - book.getValueRent();
                     user.setWallet(wallet);
                     Long timeMillis = System.currentTimeMillis();
@@ -212,7 +215,7 @@ public class UserServiceImpl implements UserService {
                     mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent book");
                     String text = "rent book" + user.getId() + book.getId();
                     mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
-                    book.setWaiting("rent");
+                    book.setUser(user);
                     bookRepository.save(book);
                 } else {
                     mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
@@ -223,6 +226,58 @@ public class UserServiceImpl implements UserService {
             mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
         }
     }
+
+    @Transactional
+    @Override
+    public void ResevedBook(Principal principal, int id) {
+        User user = userRepository.getByEmail(principal.getName());
+        try {
+            Book book = bookService.getById(id);
+            if (book.getUser() == null && book.getStatus().equals(StatusBook.LOOSE)) {
+                String s = RandomString.make(10);
+                Long time = System.currentTimeMillis();
+                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent reseved" + "key" + s);
+                book.setStatus(Status.valueOf("RESEVED"));
+                book.setResevedBook(s);
+                book.setStatusTime(time);
+                bookRepository.save(book);
+            } else {
+                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "book Reseved onli 10 days");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "prplems sory");
+        }
+    }
+
+    @Override
+    public void ResevedBookRent(Principal principal, int id, String token) {
+        User user = userRepository.getByEmail(principal.getName());
+        try {
+            Book book = bookService.getAllByResevedBook(token);
+            if (user.getWallet() >= book.getValueRent()) {
+                    int wallet = user.getWallet() - book.getValueRent();
+                    user.setWallet(wallet);
+                    Long timeMillis = System.currentTimeMillis();
+                    user.setPenaltyDaystaem(timeMillis);
+                    userRepository.save(user);
+                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent book");
+                    String text = "rent book" + user.getId() + book.getId();
+                    mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
+                    book.setUser(user);
+                    bookRepository.save(book);
+                } else {
+                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
+
+        }
+    }
+
+
 }
 
 
