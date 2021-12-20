@@ -71,7 +71,7 @@ public class BookServiceImpl implements BookService {
         Book book = getById(id);
         User user =book.getUser();
         book.setStatusTime(null);
-        book.setStatus(Status.valueOf("LOOSE"));
+        book.setStatus(StatusBook.LOOSE);
         book.setResevedBook(null);
         book.setUser(null);
         user.setPenaltyDaystaem(null);

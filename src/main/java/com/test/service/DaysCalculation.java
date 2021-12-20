@@ -64,7 +64,7 @@ public class DaysCalculation {
             Long timeBook = book1.getStatusTime();
             if (timeBook - timeMillis > 36000000) {
                 book1.setStatusTime(null);
-                book1.setStatus(Status.valueOf("LOOSE"));
+                book1.setStatus(StatusBook.LOOSE);
                 book1.setResevedBook(null);
                 try {
                     bookService.save(book1);

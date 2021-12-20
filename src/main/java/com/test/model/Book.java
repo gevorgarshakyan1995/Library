@@ -31,7 +31,7 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Book_status")
-    private Status status;
+    private StatusBook status;
 
     @Column(name = "reseved_Book_token", unique = true)
     private String ResevedBook ;
@@ -124,11 +124,11 @@ public class Book {
         this.tremRent = tremRent;
     }
 
-    public Status getStatus() {
+    public StatusBook getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusBook status) {
         this.status = status;
     }
 

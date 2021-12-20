@@ -237,7 +237,7 @@ public class UserServiceImpl implements UserService {
                 String s = RandomString.make(10);
                 Long time = System.currentTimeMillis();
                 mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent reseved" + "key" + s);
-                book.setStatus(Status.valueOf("RESEVED"));
+                book.setStatus(StatusBook.RESEVED);
                 book.setResevedBook(s);
                 book.setStatusTime(time);
                 bookRepository.save(book);
