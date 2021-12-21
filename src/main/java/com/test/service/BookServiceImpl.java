@@ -66,18 +66,6 @@ public class BookServiceImpl implements BookService {
         return bookRepository.getAllByResevedBook(ResevedBook);
     }
 
-    @Override
-    public void ReturBook(int id) throws NotFoundException {
-        Book book = getById(id);
-        User user =book.getUser();
-        book.setStatusTime(null);
-        book.setStatus(StatusBook.LOOSE);
-        book.setResevedBook(null);
-        book.setUser(null);
-        user.setPenaltyDaystaem(null);
-        userRepository.save(user);
-        bookRepository.save(book);
 
-    }
 
 }

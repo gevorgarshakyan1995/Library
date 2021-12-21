@@ -1,5 +1,6 @@
 package com.test.service;
 
+import com.test.exception.NotFoundException;
 import com.test.model.Book;
 import com.test.model.StatusBook;
 import com.test.model.User;
@@ -40,7 +41,7 @@ public class EmployServiceImpl implements EmployService {
                     user.setWallet(wallet);
                     userRepository.save(user);
                     mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "buy book");
-                    String text = "buy book" + user.getId() + book.getId();
+                    String text = "buy book" + "user"+user.getId() +"book"+ book.getId()+book.getName()+ book.getAuthot()+book.getHaort() + book.getId();
                     mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
                     bookService.DeleteById(id);
                 } else {
@@ -132,6 +133,44 @@ public class EmployServiceImpl implements EmployService {
             mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
 
         }
+    }
+
+    @Override
+    public void ResevedBookBuy(Principal principal, int id, String token) {
+        User user = userRepository.getByEmail(principal.getName());
+        try {
+            Book book = bookService.getAllByResevedBook(token);
+            if (user.getWallet() >= book.getValueRent()) {
+                int wallet = user.getWallet() - book.getValueRent();
+                user.setWallet(wallet);
+                Long timeMillis = System.currentTimeMillis();
+                user.setPenaltyDaystaem(timeMillis);
+                userRepository.save(user);
+                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "buy book");
+                String text = "user"+user.getId() + "buy book" + book.getName()+ book.getAuthot()+book.getHaort() + book.getId();
+                mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
+                bookService.DeleteById(book.getId());
+            } else {
+                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
+
+        }
+    }
+    @Override
+    public void ReturBook(int id) throws NotFoundException {
+        Book book = bookService.getById(id);
+        User user =book.getUser();
+        book.setStatusTime(null);
+        book.setStatus(StatusBook.LOOSE);
+        book.setResevedBook(null);
+        book.setUser(null);
+        user.setPenaltyDaystaem(null);
+        userRepository.save(user);
+        bookRepository.save(book);
+
     }
 
 }

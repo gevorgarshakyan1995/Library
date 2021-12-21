@@ -24,7 +24,7 @@ public interface BookService {
 
     Book getAllByResevedBook (String ResevedBook);
 
-    void ReturBook(int id) throws NotFoundException ;
+
 
 
 }

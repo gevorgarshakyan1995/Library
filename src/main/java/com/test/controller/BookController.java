@@ -15,13 +15,6 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @RolesAllowed(value = "ROLE_ADMIN")
-    @PutMapping("/return")
-    public void ReturBook(@RequestParam("id") int id) throws NotFoundException {
-        bookService.ReturBook(id);
-
-    }
-
     @GetMapping
     public List<Book> getall() throws NotFoundException {
         return bookService.getall();
