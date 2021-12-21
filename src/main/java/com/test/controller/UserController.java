@@ -56,11 +56,6 @@ public class UserController {
         userService.verified(email);
     }
 
-    @PostMapping("/send-email")
-    void sendemail(@RequestParam("email") String toEmail, @RequestParam("subject") String subject, @RequestParam("email") String email) {
-        userService.sendemail(toEmail, subject, email);
-    }
-
     @PostMapping("/reset-password")
     void ResetPasswordToken(@RequestParam("email") String Email) throws NotFoundException {
         userService.ResetPasswordToken(Email);
@@ -88,27 +83,5 @@ public class UserController {
     public void getPenaltyDaysmail(@RequestParam("id") int id) throws NotFoundException {
         userService.getPenaltyDaysmail(id);
     }
-
-    @PostMapping("/buy")
-    public void Buy(Principal principal, @RequestParam("id") int id) { //id Book
-        userService.Buy(principal, id);
-
-    }
-
-    @PostMapping("/rent")
-    public void rent(Principal principal, @RequestParam("id") int id) { //id Book
-        userService.rent(principal, id);
-    }
-
-    @PostMapping("/Reseved")
-    public void ResevedBook(Principal principal, @RequestParam("id") int id) { //id Book
-        userService.ResevedBook(principal, id);
-    }
-
-    @PostMapping("/Reseved-rent")
-    public void ResevedBookRent(Principal principal, @RequestParam("id") int id, @RequestParam("token") String token) {
-        userService.ResevedBookRent(principal, id, token);
-    }
-
 
 }

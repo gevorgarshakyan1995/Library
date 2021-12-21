@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
         try {
-            mailSender.sendSimpleMessage("gevorgarshkyan1995@gmail.com", "Verifiled" + " " + user.getEmail(), user.getEmail());
+            mailSender.sendSimpleMessage(user.getEmail(), "Verifiled" + " " + user.getEmail(), user.getEmail());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,17 +107,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendemail(String toEmail, String subject, String email) {
-        try {
-            mailSender.sendSimpleMessage(toEmail, subject, email);
-        } catch (
-                Exception e
-        ) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     @Transactional
     public void ResetPasswordToken(String email) throws NotFoundException {
         User user = getBYEmail(email);
@@ -126,7 +115,7 @@ public class UserServiceImpl implements UserService {
         user.setTimeMillis(timeMillis);
         user.setResetPasswordToken(token);
         userRepository.save(user);
-        mailSender.tokenSimpleMessage("gevorgarshkyan1995@gmail.com", "Reset Password", token);
+        mailSender.tokenSimpleMessage(user.getEmail(), "Reset Password", token);
     }
 
     @Override
@@ -170,114 +159,6 @@ public class UserServiceImpl implements UserService {
         User user = getById(id);
         mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "please return the book");
     }
-
-    @Transactional
-    @Override
-    public void Buy(Principal principal, int id) { //id Book
-        User user = userRepository.getByEmail(principal.getName());
-        try {
-            Book book = bookService.getById(id);
-            if (user.getWallet() >= book.getValue()) {
-                if (book.getUser() == null && book.getStatus().equals(StatusBook.LOOSE)) {
-                    int wallet = user.getWallet() - book.getValue();
-                    user.setWallet(wallet);
-                    userRepository.save(user);
-                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "buy book");
-                    String text = "buy book" + user.getId() + book.getId();
-                    mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
-                    bookService.DeleteById(id);
-                } else {
-                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "Book  RESEVED onli 10dasy");
-                }
-            }
-            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
-        } catch (Exception e) {
-            e.printStackTrace();
-            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
-        }
-
-
-    }
-
-    @Transactional
-    @Override
-    public void rent(Principal principal, int id) {
-        User user = userRepository.getByEmail(principal.getName());
-        try {
-            Book book = bookService.getById(id);
-            if (user.getWallet() >= book.getValueRent()) {
-                if (book.getUser() == null && book.getStatus().equals(StatusBook.LOOSE)) {
-                    int wallet = user.getWallet() - book.getValueRent();
-                    user.setWallet(wallet);
-                    Long timeMillis = System.currentTimeMillis();
-                    user.setPenaltyDaystaem(timeMillis);
-                    userRepository.save(user);
-                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent book");
-                    String text = "rent book" + user.getId() + book.getId();
-                    mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
-                    book.setUser(user);
-                    bookRepository.save(book);
-                } else {
-                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void ResevedBook(Principal principal, int id) {
-        User user = userRepository.getByEmail(principal.getName());
-        try {
-            Book book = bookService.getById(id);
-            if (book.getUser() == null && book.getStatus().equals(StatusBook.LOOSE)) {
-                String s = RandomString.make(10);
-                Long time = System.currentTimeMillis();
-                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent reseved" + "key" + s);
-                book.setStatus(StatusBook.RESEVED);
-                book.setResevedBook(s);
-                book.setStatusTime(time);
-                bookRepository.save(book);
-            } else {
-                mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "book Reseved onli 10 days");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "prplems sory");
-        }
-    }
-
-    @Override
-    public void ResevedBookRent(Principal principal, int id, String token) {
-        User user = userRepository.getByEmail(principal.getName());
-        try {
-            Book book = bookService.getAllByResevedBook(token);
-            if (user.getWallet() >= book.getValueRent()) {
-                    int wallet = user.getWallet() - book.getValueRent();
-                    user.setWallet(wallet);
-                    Long timeMillis = System.currentTimeMillis();
-                    user.setPenaltyDaystaem(timeMillis);
-                    userRepository.save(user);
-                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", book.getName() + "rent book");
-                    String text = "rent book" + user.getId() + book.getId();
-                    mailSender.tokenSimpleMessage("admin@gmail.com", "Good Library", text);
-                    book.setUser(user);
-                    bookRepository.save(book);
-                } else {
-                    mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
-                }
-        } catch (Exception e) {
-            e.printStackTrace();
-            mailSender.tokenSimpleMessage(user.getEmail(), "Good Library", "There is no corresponding amount");
-
-        }
-    }
-
-
 }
 
 
