@@ -19,8 +19,8 @@ public class UserController {
 
     @RolesAllowed(value = "ROLE_ADMIN")
     @GetMapping
-    List<User> getAll() throws NotFoundException {
-        return userService.getall();
+    List<User> getAll(@RequestParam("no") Integer no, @RequestParam("sort") String sort) throws NotFoundException {
+        return userService.getall(no, sort); // no = page nomer
     }
 
     @RolesAllowed(value = "ROLE_ADMIN")

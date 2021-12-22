@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 public interface BookService {
-    public List<Book> getall() throws NotFoundException;
+    public List<Book> getall(Integer no,String sort) throws NotFoundException;
 
     void save(Book book) throws NotFoundException;
 

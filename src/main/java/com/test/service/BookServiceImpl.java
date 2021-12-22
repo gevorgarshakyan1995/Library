@@ -8,7 +8,11 @@ import com.test.model.User;
 import com.test.repository.BookRepository;
 import com.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +26,11 @@ public class BookServiceImpl implements BookService {
     private UserRepository userRepository;
 
     @Override
-    public List<Book> getall() throws NotFoundException {
-        return bookRepository.findAll();
+    public List<Book> getall(Integer no, String sort) throws NotFoundException {
+        Integer saze = 10;
+        PageRequest pageRequest = PageRequest.of(no, saze, Sort.by(sort));
+        Page<Book> page = bookRepository.findAll(pageRequest);
+        return page.getContent();
     }
 
     @Override
@@ -65,7 +72,6 @@ public class BookServiceImpl implements BookService {
     public Book getAllByResevedBook(String ResevedBook) {
         return bookRepository.getAllByResevedBook(ResevedBook);
     }
-
 
 
 }

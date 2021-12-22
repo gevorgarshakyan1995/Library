@@ -2,12 +2,13 @@ package com.test.service;
 
 import com.test.exception.NotFoundException;
 import com.test.model.Address;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 public interface AddresService {
 
-    public List<Address> getall();
+    public List<Address> getall(Integer no,String sort);
 
     public Address save(Address address);
 

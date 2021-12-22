@@ -56,7 +56,7 @@ public class DaysCalculation {
         }
     }
 
-    @Scheduled(fixedRate = 3600L)
+    @Scheduled(fixedRate = 36000L)
     public void ResevedDays() throws NotFoundException {
         List<Book> book = bookService.getAllByStatus(StatusBook.RESEVED);
         for (Book book1 : book) {

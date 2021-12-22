@@ -6,6 +6,9 @@ import com.test.repository.BookRepository;
 import com.test.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,8 +49,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getall() throws NotFoundException {
-        return userRepository.findAll();
+    public List<User> getall(Integer no, String sort) throws NotFoundException {
+        Integer saze = 10;
+        PageRequest pageRequest = PageRequest.of(no, saze, Sort.by(sort));
+        Page<User> page = userRepository.findAll(pageRequest);
+        return page.getContent();
     }
 
     @Transactional

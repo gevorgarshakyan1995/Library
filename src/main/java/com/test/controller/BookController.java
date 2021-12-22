@@ -16,8 +16,8 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping
-    public List<Book> getall() throws NotFoundException {
-        return bookService.getall();
+    public List<Book> getall(@RequestParam("no") Integer no, @RequestParam("sort") String sort) throws NotFoundException {
+        return bookService.getall(no, sort);  // no = page nomer
     }
 
     @RolesAllowed(value = "ROLE_ADMIN")
@@ -28,22 +28,22 @@ public class BookController {
 
     @RolesAllowed(value = "ROLE_ADMIN")
     @DeleteMapping
-    public void DeleteById(int id){
+    public void DeleteById(int id) {
         bookService.DeleteById(id);
     }
 
     @GetMapping("{id}")
-    public Book getById(@PathVariable int id) throws NotFoundException{
+    public Book getById(@PathVariable int id) throws NotFoundException {
         return bookService.getById(id);
     }
 
     @GetMapping("/get-name")
-    public List<Book> getAllByName(String name){
+    public List<Book> getAllByName(String name) {
         return bookService.getAllByName(name);
     }
 
     @GetMapping("/get-author")
-    public List<Book> getAllByAuthot (String Authot){
+    public List<Book> getAllByAuthot(String Authot) {
         return bookService.getAllByAuthot(Authot);
     }
 

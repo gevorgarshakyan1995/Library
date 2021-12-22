@@ -3,14 +3,12 @@ package com.test.service;
 
 import com.test.exception.NotFoundException;
 import com.test.model.User;
-
-import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
 
 
-    List<User> getall() throws NotFoundException;
+    List<User> getall(Integer no, String sort) throws NotFoundException;
 
     void save(User users) throws NotFoundException;
 

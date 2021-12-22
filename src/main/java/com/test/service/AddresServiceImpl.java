@@ -5,6 +5,11 @@ import com.test.exception.NotFoundException;
 import com.test.model.Address;
 import com.test.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +24,11 @@ public class AddresServiceImpl implements AddresService {
     private AddressRepository addressRepository;
 
     @Override
-    public List<Address> getall() {
-        return addressRepository.findAll();
+    public List<Address> getall(Integer no, String sort) {
+        Integer PageSaze = 10;
+        Pageable pageable = PageRequest.of(no, PageSaze, Sort.by(sort));
+        Page<Address> page = addressRepository.findAll(pageable);
+        return page.getContent();
     }
 
     @Override
@@ -59,9 +67,9 @@ public class AddresServiceImpl implements AddresService {
     @Override
     public Address getAllByNumberAndCityAndStreet(Address address) {
         String nnumber = address.getNumber();
-        String city =address.getCity();
+        String city = address.getCity();
         String Street = address.getStreet();
-        address=addressRepository.getAllByNumberAndCityAndStreet(nnumber,city,Street);
+        address = addressRepository.getAllByNumberAndCityAndStreet(nnumber, city, Street);
         return address;
 
     }

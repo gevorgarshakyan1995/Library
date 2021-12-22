@@ -15,8 +15,8 @@ public class AddressController {
     private AddresService addresService;
 
     @GetMapping
-    List<Address> getAll() {
-        return addresService.getall();
+    List<Address> getAll(@RequestParam("no") Integer no, @RequestParam("sort") String sort) {  // no = page nomer
+        return addresService.getall(no, sort);
     }
 
     @GetMapping("{id}")
@@ -26,13 +26,13 @@ public class AddressController {
 
 
     @DeleteMapping
-    public void DeleteById(@RequestParam("id") int id){
+    public void DeleteById(@RequestParam("id") int id) {
         addresService.DeleteById(id);
     }
 
     @PutMapping
-    public void Urdate(@RequestParam("id") int id,@RequestParam("models") String models) throws NotFoundException {
-        addresService.Urdate(id,models );
+    public void Urdate(@RequestParam("id") int id, @RequestParam("models") String models) throws NotFoundException {
+        addresService.Urdate(id, models);
 
     }
 
